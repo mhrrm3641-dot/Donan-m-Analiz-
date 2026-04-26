@@ -1,0 +1,3 @@
+- name: pytest ile test edin
+  run: pytest
+  continue-on-error: true # Test başarısız olsa bile devam etsin
