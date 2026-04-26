@@ -24,3 +24,42 @@ export default async function AdminPanel() {
     </div>
   );
 }
+import { db } from "@/lib/db";
+import { siteSettings } from "@/lib/db/src/schema/site";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+
+export default async function AdminPanel() {
+  // Veritabanından mevcut ayarları çekiyoruz, boşsa hata vermemesi için güvenli tutuyoruz
+  const settings = await db.query.siteSettings.findFirst();
+
+  // Güncelleme yapan güvenli fonksiyon
+  async function updateSiteSettings(formData: FormData) {
+    "use server";
+    const newTitle = formData.get("siteTitle") as string;
+    
+    // Veritabanını güncelle
+    await db.update(siteSettings)
+      .set({ siteTitle: newTitle })
+      .where(eq(siteSettings.id, 1));
+      
+    // İşlem bitince sayfayı yenile ki yeni başlığı hemen görebilesin
+    revalidatePath("/admin");
+  }
+
+  return (
+    <div className="admin-container" style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1>Admin Dashboard</h1>
+      <form action={updateSiteSettings} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px' }}>
+        <label htmlFor="siteTitle">Site Title:</label>
+        <input 
+          id="siteTitle"
+          name="siteTitle" 
+          defaultValue={settings?.siteTitle ?? ""} 
+          style={{ padding: '0.5rem' }}
+        />
+        <button type="submit" style={{ padding: '0.5rem', cursor: 'pointer' }}>Save Changes</button>
+      </form>
+    </div>
+  );
+}
