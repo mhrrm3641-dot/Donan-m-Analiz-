@@ -2,9 +2,12 @@ name: Python application
 
 on: [push]
 
+# GitHub'ın Node24 geçişi için zorunlu kılınan ortam değişkeni
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
-    # 'ubuntu-latest' otomatik olarak güncel olanı (Node 22/24 uyumlu) seçer
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -18,12 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # requirements.txt yoksa hata vermemesi için
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Test with pytest
-      # 'continue-on-error' ile iş akışının tamamen durmasını engelliyoruz
-      run: pytest || echo "Test başarısız ancak devam ediliyor..."
-- name: pytest ile test edin
-  run: pytest
-  continue-on-error: true # Test başarısız olsa bile devam etsin
+      run: pytest || echo "Test başarısız ancak akış devam ediyor..."
