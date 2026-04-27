@@ -15,3 +15,26 @@
     { "baslik": "Cyber Base Başladı", "icerik": "Küresel yayındayız." }
   ]
 }
+const borsaUrl = "BURAYA_AZ_ÖNCE_KOPYALADIĞIN_RAW_LİNKİNİ_YAPIŞTIR";
+
+async function verileriEkranaBas() {
+  try {
+    const cevap = await fetch(borsaUrl);
+    const veri = await cevap.json();
+    const ekran = document.getElementById("analiz-ekrani");
+    
+    if (ekran) {
+      ekran.innerHTML = `
+        <div style="background:#000; color:#0f0; padding:15px; border:1px solid #0f0; font-family:monospace;">
+          <div>THY: ${veri['THYAO.IS']} TL</div>
+          <div>ASELSAN: ${veri['ASELS.IS']} TL</div>
+          <div>USD: ${veri['USDTRY=X']} TL</div>
+          <div>BTC: ${veri['BTC-USD']} $</div>
+        </div>
+      `;
+    }
+  } catch (hata) {
+    console.log("Veri çekilemedi:", hata);
+  }
+}
+verileriEkranaBas();
