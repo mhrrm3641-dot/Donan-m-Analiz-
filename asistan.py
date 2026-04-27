@@ -1,5 +1,9 @@
 import os
 import json
+import datetime # En üste ekle
+
+# Güncelleme yapıldı mesajının olduğu kısma ekle:
+print(f"[{datetime.datetime.now()}] Güncelleme yapıldı: {yeni_baslik}")
 
 def veriyi_guncelle(yeni_baslik, yeni_icerik):
     data = {
