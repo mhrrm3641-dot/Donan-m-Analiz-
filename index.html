@@ -7,6 +7,22 @@
   <title>GLOBAL CYBER BASE | GÜÇ VE VİZYON</title>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7403038226629562" crossorigin="anonymous"></script>
+// Termux Köprüsü İçin Yeni Fonksiyonlar
+const TERMUX_URL = "http://localhost:5000/komut"; // Aynı cihazdaysan localhost
+
+window.termuxGonder = async (tip) => {
+    terminalYaz(`[BAĞLANTI] Termux Üssüne Emir Gönderiliyor: ${tip}...`);
+    try {
+        const response = await fetch(`${TERMUX_URL}?tip=${tip}`);
+        const data = await response.json();
+        terminalYaz(`[TERMUX] Yanıt: ${data.durum}`);
+    } catch (error) {
+        terminalYaz(`[HATA] Termux Köprüsü Bulunamadı! (bridge.py çalışıyor mu?)`);
+    }
+};
+
+// Eski butonları şu şekilde güncelle:
+// <button class="btn" onclick="termuxGonder('tv_menu')">TV Menüsünü Aç</button>
 
   <style>
     :root{--mavi:#0d6efd;--kirmizi:#dc3545;--bg:#f4f7f6;--koyu:#1a1a1a;--terminal:#0b0b0b;--card-shadow: 0 8px 30px rgba(10,10,10,0.06)}
@@ -262,7 +278,16 @@
   });
 
 })();
-</script>
+</script><section class="intro" style="border-left-color: var(--kirmizi); margin-top:30px;">
+  <h3 style="color:var(--kirmizi); margin:0;">📺 SMART TV UZAKTAN KONTROL</h3>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top:15px;">
+    <button class="btn" onclick="termuxGonder('tv_power')">GÜÇ</button>
+    <button class="btn" onclick="termuxGonder('tv_vol_up')">SES +</button>
+    <button class="btn" onclick="termuxGonder('tv_vol_down')">SES -</button>
+    <button class="btn" onclick="termuxGonder('tv_menu')" style="background:var(--koyu)">MENÜ</button>
+  </div>
+</section>
+
 </body>
 </html>
  
