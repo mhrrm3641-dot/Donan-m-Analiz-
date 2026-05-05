@@ -217,14 +217,17 @@
             terminal.innerHTML = `<div><span style="color:#64748b">[${time}]</span> ${msg}</div>` + terminal.innerHTML;
         };
 
-        window.termuxExec = async (type, val) => {
-            logToTerm(`[EMİR] ${type} isteği Termux'a iletiliyor...`);
-            try {
-                const response = await fetch(`${BRIDGE_URL}?tip=${type}&val=${val}`);
-                const data = await response.json();
-                logToTerm(`[BAŞARILI] Termux Yanıtı: ${data.durum}`);
-            } catch (err) {
-                logToTerm(`[UYARI] Termux Köprüsü Pasif! (bridge.py çalışmıyor olabilir)`);
+        window..cyber-terminal {
+    background: #000;
+    color: #00ff88;
+    padding: 15px;
+    height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap; /* Satırları otomatik aşağı atar, taşmayı önler */
+    word-break: break-all; /* Uzun komutları böler */
+    border: 1px solid #334155;
+}
+
             }
         };
 
