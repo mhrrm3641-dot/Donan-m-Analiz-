@@ -4,290 +4,360 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Global Cyber Base: Muharrem Gürlüyer liderliğinde küresel siber güvenlik ve teknoloji analiz platformu.">
-  <title>GLOBAL CYBER BASE | GÜÇ VE VİZYON</title>
+  <title>GLOBAL CYBER BASE | KOMUTA MERKEZİ</title>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7403038226629562" crossorigin="anonymous"></script>
-// Termux Köprüsü İçin Yeni Fonksiyonlar
-const TERMUX_URL = "http://localhost:5000/komut"; // Aynı cihazdaysan localhost
-
-window.termuxGonder = async (tip) => {
-    terminalYaz(`[BAĞLANTI] Termux Üssüne Emir Gönderiliyor: ${tip}...`);
-    try {
-        const response = await fetch(`${TERMUX_URL}?tip=${tip}`);
-        const data = await response.json();
-        terminalYaz(`[TERMUX] Yanıt: ${data.durum}`);
-    } catch (error) {
-        terminalYaz(`[HATA] Termux Köprüsü Bulunamadı! (bridge.py çalışıyor mu?)`);
-    }
-};
-
-// Eski butonları şu şekilde güncelle:
-// <button class="btn" onclick="termuxGonder('tv_menu')">TV Menüsünü Aç</button>
 
   <style>
-    :root{--mavi:#0d6efd;--kirmizi:#dc3545;--bg:#f4f7f6;--koyu:#1a1a1a;--terminal:#0b0b0b;--card-shadow: 0 8px 30px rgba(10,10,10,0.06)}
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#f8fbfc 0,#eef6ff 100%);font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:var(--koyu);line-height:1.6}
-    .container{max-width:1200px;margin:32px auto;padding:24px}
-    .header{background:#fff;border-radius:14px;padding:28px;border-left:6px solid var(--mavi);display:flex;align-items:center;gap:20px;box-shadow:var(--card-shadow)}
-    .brand{flex:1}
-    .brand h1{margin:0;color:var(--kirmizi);letter-spacing:3px;font-size:22px}
-    .brand p{margin:6px 0 0;color:#3b4a57;font-weight:600}
-    .ad-top{width:320px;max-width:340px}
-    .intro{background:#fff;padding:18px;border-radius:12px;margin-top:20px;border-left:6px solid var(--mavi);box-shadow:var(--card-shadow)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
-    .card{background:#fff;border-radius:12px;padding:18px;text-align:center;border-top:6px solid var(--mavi);transition:transform .16s,box-shadow .16s;box-shadow:0 6px 18px rgba(20,20,20,0.04)}
-    .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(10,10,10,0.08);border-top-color:var(--kirmizi)}
-    .card-emoji{font-size:28px}
-    .card-title{margin-top:10px;color:var(--mavi);font-weight:700}
-    .btn{background:var(--mavi);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:12px;display:block;width:100%}
-    .terminal{background:linear-gradient(90deg,#071017 0,#0b1a24 100%);border-radius:12px;padding:16px;margin-top:22px;color:#00ff7a;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;white-space:pre-wrap;font-size:14px;min-height:100px;box-shadow:var(--card-shadow);border: 1px solid #1e2d3d}
-    .news-wrap{display:flex;gap:18px;margin-top:20px;align-items:flex-start}
-    .news{flex:1;background:#fff;border-radius:12px;padding:18px;border-top:6px solid var(--mavi);box-shadow:var(--card-shadow)}
-    .news h3{margin:0 0 8px 0;color:var(--kirmizi);padding-bottom:8px;border-bottom:2px solid rgba(220,53,69,0.08)}
-    .news-item{padding:12px 0;border-bottom:1px dashed #eee}
-    .admin-toggle{text-decoration:underline;background:none;border:none;color:#6b7280;cursor:pointer;margin-top:10px}
-    #admin-panel{display:none;background:linear-gradient(180deg,#fff7f7 0,#fff 100%);border:2px solid rgba(220,53,69,0.14);padding:14px;border-radius:10px;margin-top:14px;box-shadow:0 10px 30px rgba(220,53,69,0.04)}
-    .admin-input{width:100%;padding:10px;margin:8px 0;border:1px solid #e6eefb;border-radius:8px;background:#fff}
-    footer{text-align:center;padding:28px;margin-top:28px;color:#42505a}
+    /* Global Stil Tanımlamaları */
+    :root {
+      --mavi: #0d6efd;
+      --kirmizi: #dc3545;
+      --bg: #f4f7f6;
+      --koyu: #1a1a1a;
+      --terminal-bg: #0b0b0b;
+      --yazi-yesil: #00ff7a;
+      --card-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; transition: all 0.2s ease; }
     
-    /* Reklam kapsayıcıları */
-    .ad-container{display:flex;justify(align-items:center;padding:12px 0}
-    
-    @media (max-width:720px){ 
-      .header{flex-direction:column;align-items:flex-start} 
-      .ad-top{width:100%;max-width:none} 
-      .news-wrap{flex-direction:column} 
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #f8fbfc 0%, #eef6ff 100%);
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--koyu);
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1240px; margin: 40px auto; padding: 20px; }
+
+    /* Header ve Marka Alanı */
+    .header {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      border-left: 8px solid var(--mavi);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 25px;
+    }
+
+    .brand { flex: 2; }
+    .brand h1 { margin: 0; color: var(--kirmizi); letter-spacing: 4px; font-size: 26px; text-transform: uppercase; }
+    .brand p { margin: 8px 0 0; color: #4b5563; font-weight: 600; font-size: 14px; }
+
+    .ad-top { flex: 1; min-width: 300px; text-align: right; }
+
+    /* Vizyon ve Bilgi Paneli */
+    .intro {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      border-left: 8px solid var(--mavi);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 25px;
+    }
+
+    /* TV Kontrol Paneli Tasarımı */
+    .tv-panel {
+      background: #111;
+      color: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      border-bottom: 5px solid var(--kirmizi);
+    }
+
+    .tv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    /* Kart Yapıları */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      border-top: 6px solid var(--mavi);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .card:hover { transform: translateY(-10px); border-top-color: var(--kirmizi); }
+
+    /* Buton Tasarımları */
+    .btn {
+      background: var(--mavi);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn:active { transform: scale(0.95); }
+    .btn-tv { background: #333; font-size: 13px; }
+    .btn-tv:hover { background: #444; color: var(--yazi-yesil); }
+
+    /* Siber Terminal */
+    .terminal {
+      background: var(--terminal-bg);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 25px 0;
+      color: var(--yazi-yesil);
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      min-height: 150px;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 20px rgba(0,255,122,0.1);
+      border: 1px solid #222;
+    }
+
+    /* Haber Akışı */
+    .content-area { display: flex; gap: 25px; margin-top: 25px; }
+    .news-section { flex: 2; background: #fff; padding: 25px; border-radius: 15px; box-shadow: var(--card-shadow); }
+    .side-bar { flex: 1; }
+
+    .news-item { padding: 15px 0; border-bottom: 1px dashed #eee; position: relative; }
+    .news-item h4 { margin: 0 0 5px 0; color: var(--mavi); }
+    .news-item p { margin: 0; font-size: 14px; color: #555; }
+
+    /* Admin ve Footer */
+    #admin-panel {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+      border: 2px solid var(--kirmizi);
+    }
+
+    footer { text-align: center; padding: 40px; color: #6b7280; font-size: 14px; }
+
+    @media (max-width: 850px) {
+      .header, .content-area { flex-direction: column; }
+      .ad-top { text-align: center; width: 100%; }
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     
-    <header class="header" role="banner">
+    <header class="header">
       <div class="brand">
         <h1>GLOBAL CYBER BASE</h1>
         <p>KÜRESEL SİBER GÜVENLİK VE TEKNOLOJİ ANALİZ MERKEZİ</p>
       </div>
-
       <div class="ad-top">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7403038226629562"
-             data-ad-slot="1234567890"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7403038226629562" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
     </header>
 
-    <section class="intro" aria-labelledby="vizyon">
-      <strong id="vizyon">Vizyonumuz:</strong>
-      <p style="margin:8px 0 0">Global Cyber Base, Muharrem Gürlüyer liderliğinde küresel siber savunma sistemleri üzerine odaklanmış dijital bir kaledir.</p>
+    <section class="intro">
+      <strong>VİZYONUMUZ:</strong>
+      <p style="margin-top:10px">Global Cyber Base, küresel ölçekte siber tehdit analizi, savunma protokolleri ve ileri teknoloji çözümleri sunan bir komuta merkezidir.</p>
     </section>
 
-    <section class="grid" aria-label="Modüller">
-      <div class="card">
-        <div class="card-emoji">🛡️</div>
-        <div class="card-title">Siber Savunma</div>
-        <button class="btn" onclick="terminalYaz('Siber Savunma Protokolü Aktif Edildi. Küresel Güvenlik Duvarı Taranıyor...\n[DETECTED] siber_goz_app/ klasörü senkronize ediliyor.')">Protokolü Aç</button>
-      </div>
-      <div class="card">
-        <div class="card-emoji">🧠</div>
-        <div class="card-title">Yapay Zeka</div>
-        <button class="btn" onclick="terminalYaz('YZ Analiz Modülü Başlatıldı. Derin Öğrenme Verileri İşleniyor...')">Analizi Başlat</button>
-      </div>
-      <div class="card">
-        <div class="card-emoji">🚀</div>
-        <div class="card-title">Siber Asistan</div>
-        <button class="btn" onclick="terminalYaz('Siber Asistan V2 Bağlantısı Kuruldu. Küresel Ağ ile Senkronize Ediliyor...')">Bağlan</button>
-      </div>
-      <div class="card">
-        <div class="card-emoji">🔐</div>
-        <div class="card-title">Kriptoloji</div>
-        <button class="btn" onclick="terminalYaz('256-Bit Şifreleme Anahtarı Çözülüyor. Küresel Erişim İzni Sorgulanıyor...')">Şifre Çöz</button>
+    <section class="tv-panel">
+      <h3 style="margin-top:0; color:var(--yazi-yesil)">📺 SMART TV REMOTE CENTER (VESTEL LINUX)</h3>
+      <div class="tv-grid">
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1012)">GÜÇ (POWER)</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1048)">MENÜ</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1016)">SES +</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1017)">SES -</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1053)">TAMAM (OK)</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_cmd', 1056)">KAYNAK (SOURCE)</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_app', 'Netflix')" style="background:#e50914">NETFLIX</button>
+        <button class="btn btn-tv" onclick="termuxGonder('tv_app', 'YouTube')" style="background:#ff0000">YOUTUBE</button>
       </div>
     </section>
 
-    <div class="terminal" role="status" aria-live="polite" id="terminal-ekrani">Sistem terminali hazır... [Giriş Bekleniyor]</div>
+    <section class="grid">
+      <div class="card">
+        <div style="font-size:35px">🛡️</div>
+        <h3>Siber Savunma</h3>
+        <button class="btn" onclick="terminalYaz('[SİSTEM] Güvenlik duvarı katmanları taranıyor... Global IP blokajı aktif.')">PROTOLÜ AÇ</button>
+      </div>
+      <div class="card">
+        <div style="font-size:35px">🧠</div>
+        <h3>Yapay Zeka</h3>
+        <button class="btn" onclick="terminalYaz('[AI] Derin öğrenme algoritmaları borsa verilerini analiz ediyor...')">ANALİZİ BAŞLAT</button>
+      </div>
+      <div class="card">
+        <div style="font-size:35px">🚀</div>
+        <h3>Siber Asistan</h3>
+        <button class="btn" onclick="termuxGonder('check_status', 0)">TERMUX BAĞLAN</button>
+      </div>
+    </section>
 
-    <div class="news-wrap">
-      
-      <section class="news" aria-labelledby="cyber-news">
-        <h3 id="cyber-news">📡 CYBER NEWS GLOBAL</h3>
-        <div id="haberler-listesi" aria-live="polite"></div>
+    <div class="terminal" id="terminal-ekrani">
+      > Sistem başlatıldı... [BEKLEMEDE]<br>
+      > Termux bridge.py servisi bekleniyor...
+    </div>
 
-        <div class="ad-container" style="margin-top:12px">
-          <ins class="adsbygoogle"
-               style="display:block;width:100%;height:90px"
-               data-ad-client="ca-pub-7403038226629562"
-               data-ad-slot="0987654321"></ins>
+    <div class="content-area">
+      <main class="news-section">
+        <h3 style="color:var(--kirmizi); border-bottom: 2px solid #eee; padding-bottom:10px">📡 CYBER NEWS GLOBAL</h3>
+        <div id="haberler-listesi">
+          </div>
+        
+        <div style="margin-top:20px; text-align:center">
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7403038226629562" data-ad-slot="1122334455" data-ad-format="auto"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
-      </section>
+      </main>
 
-      <aside style="width:320px;max-width:320px">
-        <div style="background:#fff;border-radius:12px;padding:16px;border-top:6px solid var(--mavi);box-shadow:var(--card-shadow)">
-          <h4 style="margin:0 0 8px 0;color:var(--mavi)">Sistem Durumu</h4>
-          <p style="margin:0 0 8px 0;color:#475569;font-size:14px">Python asistanı ile borsa ve ağ raporları anlık işlenmektedir.</p>
-          <button class="btn" style="background:#06b6d4" onclick="terminalYaz('Borsa Raporları Güncellendi: THYAO, ASELS, EREGL takipte.')">Raporu Al</button>
+      <aside class="side-bar">
+        <div class="card" style="text-align:left; border-top-color: var(--kirmizi)">
+          <h4 style="margin:0; color:var(--mavi)">Sistem Durumu</h4>
+          <p style="font-size:13px; color:#666">Borsa İstanbul Takip (THYAO, ASELS, EREGL) ve Siber Göz V2 aktif durumda.</p>
+          <button class="btn" onclick="terminalYaz('[BORSA] Python analizöründen gelen veriler: Endeks stabil.')">RAPOR AL</button>
         </div>
 
-        <div class="ad-container" style="margin-top:16px">
-          <ins class="adsbygoogle"
-               style="display:block;width:100%;height:250px"
-               data-ad-client="ca-pub-7403038226629562"
-               data-ad-slot="1122334455"></ins>
+        <div style="margin-top:20px">
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7403038226629562" data-ad-slot="9988776655" data-ad-format="rectangle"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </aside>
-
     </div>
 
-    <div style="text-align:center;margin-top:18px">
-      <button class="admin-toggle" id="adminAcButon">[ YÖNETİCİ GİRİŞİ ]</button>
+    <div style="text-align:center; margin-top:30px">
+      <button onclick="toggleAdmin()" style="background:none; border:none; color:#9ca3af; cursor:pointer; text-decoration:underline">[ YÖNETİCİ GİRİŞİ ]</button>
     </div>
 
-    <section id="admin-panel" aria-hidden="true">
-      <h3 style="color:var(--kirmizi);margin-top:0">YÖNETİM MERKEZİ</h3>
-      <input id="admin-sifre" class="admin-input" type="password" placeholder="Yönetici Parolası (admin-demo-2026)">
-      <input id="h-baslik" class="admin-input" type="text" placeholder="Haber Başlığı">
-      <textarea id="h-icerik" class="admin-input" rows="4" placeholder="Haber Detayı"></textarea>
-      <button id="h-yayinla" class="btn" style="background:var(--kirmizi)">Haberi Yayınla</button>
+    <section id="admin-panel">
+      <h4 style="color:var(--kirmizi); margin-top:0">HABER YÖNETİM MERKEZİ</h4>
+      <input type="password" id="admin-sifre" placeholder="Erişim Şifresi" style="width:100%; padding:10px; margin-bottom:10px">
+      <input type="text" id="h-baslik" placeholder="Haber Başlığı" style="width:100%; padding:10px; margin-bottom:10px">
+      <textarea id="h-icerik" rows="4" placeholder="Haber Detayları..." style="width:100%; padding:10px; margin-bottom:10px"></textarea>
+      <button class="btn" style="background:var(--kirmizi)" onclick="haberYayinla()">SİSTEME ENJEKTE ET</button>
     </section>
 
     <footer>
-      <strong style="color:var(--kirmizi)">MUHARREM GÜRLÜYER | ANALİST</strong>
-      <p style="font-size:13px">© 2026 muharremgurluyer.com.tr</p>
+      <strong style="color:var(--kirmizi)">MUHARREM GÜRLÜYER | SİBER ANALİST</strong><br>
+      © 2026 muharremgurluyer.com.tr | Global Cyber Base Project
     </footer>
+
   </div>
 
-<script>
-(() => {
-  // ŞİFRE VE VERİTABANI ANAHTARI (Görüntü 3'ten admin-demo-2026)
-  const SIFRE = 'admin-demo-2026';
-  const KEY = 'global_cyber_v7'; // Verilerin çakışmaması için sürüm güncellendi
-  
-  const term = document.getElementById('terminal-ekrani');
-  const haberAlan = document.getElementById('haberler-listesi');
-  const panel = document.getElementById('admin-panel');
+  <script>
+    /**
+     * GLOBAL CYBER BASE - CORE JAVASCRIPT v9.0
+     * Bu bölüm haber yönetimi, terminal efektleri ve Termux bağlantısını yönetir.
+     */
+    (() => {
+      const ADMIN_PASS = 'admin-demo-2026';
+      const STORAGE_KEY = 'gcb_v9_data';
+      const TERMUX_API = 'http://localhost:5000/komut'; // bridge.py adresi
 
-  // Termux'taki kirici.py sözlük listesi (Görüntü 3'ten)
-  const sozluk = ["admin", "123456", "muharrem", "sifre123", "password"];
+      const term = document.getElementById('terminal-ekrani');
+      const newsBox = document.getElementById('haberler-listesi');
 
-  // 1. Terminal Efekti Fonksiyonu (Butonları Canlandırır)
-  window.terminalYaz = (mesaj) => {
-    term.style.color = "#00ff7a";
-    term.textContent = `[SİSTEM] ${mesaj}`;
-    
-    setTimeout(() => {
-        term.textContent += `\n[OK] Küresel bağlantı doğrulandı ve işlem tamamlandı.`;
-    }, 1500);
-  };
+      // 1. Terminal Yazdırma Fonksiyonu
+      window.terminalYaz = (msg) => {
+        const time = new Date().toLocaleTimeString();
+        const line = `<div><span style="color:#888">[${time}]</span> ${msg}</div>`;
+        term.innerHTML = line + term.innerHTML;
+        // Terminalin çok dolmasını engellemek için son 15 satırı tut
+        if (term.childNodes.length > 15) term.removeChild(term.lastChild);
+      };
 
-  // 2. Haberleri Yerel Hafızadan (Local Storage) Çekme
-  let haberler = JSON.parse(localStorage.getItem(KEY)) || [
-    { baslik: "Global Cyber Base Yeni Sürüm Aktif", tarih: "2026-05-05", icerik: "Tüm sistemler küresel ölçekte senkronize edildi." }
-  ];
+      // 2. Termux Köprüsü Üzerinden Emir Gönderimi
+      window.termuxGonder = async (type, value) => {
+        terminalYaz(`[SİNYAL] ${type} isteği Termux üssüne iletiliyor...`);
+        try {
+          // Termux'taki bridge.py servisine istek atar
+          const response = await fetch(`${TERMUX_API}?tip=${type}&val=${value}`);
+          if (!response.ok) throw new Error();
+          const resData = await response.json();
+          terminalYaz(`[BAŞARILI] Yanıt: ${resData.durum}`);
+        } catch (err) {
+          terminalYaz(`[HATA] Termux Köprüsü (bridge.py) çevrimdışı!`);
+        }
+      };
 
-  // 3. Haberleri Ekrana Çizme Fonksiyonu
-  function listele() {
-    if (haberler.length === 0) {
-        haberAlan.innerHTML = '<div style="color:#666">Sistemde henüz kayıtlı haber bulunmuyor.</div>';
-        return;
-    }
-    
-    haberAlan.innerHTML = haberler.map((h, index) => `
-      <div class="news-item">
-        <strong style="color:var(--mavi)">${escapeHtml(h.baslik)}</strong> <small>[${escapeHtml(h.tarih)}]</small>
-        <p style="margin:8px 0">${escapeHtml(h.icerik)}</p>
-        ${index > 0 ? `<button onclick="haberSil(${index})" style="color:red;background:none;border:none;cursor:pointer;font-size:12px;padding:0;text-decoration:underline;">Haberi Sil</button>` : ''}
-      </div>
-    `).join('');
-  }
-  listele();
-
-  // 4. Yönetici Panelini Açma / Kapatma
-  document.getElementById('adminAcButon').onclick = () => {
-    const durum = panel.style.display;
-    panel.style.display = durum === 'block' ? 'none' : 'block';
-  };
-
-  // 5. Yeni Haber Ekleme (Yönetici Yetkisi İle)
-  document.getElementById('h-yayinla').onclick = () => {
-    const girilenSifre = document.getElementById('admin-sifre').value;
-    
-    if(girilenSifre !== SIFRE) { 
-        alert('Yetki Reddedildi: Geçersiz Parola!'); 
-        return; 
-    }
-    
-    const baslik = document.getElementById('h-baslik').value.trim();
-    const icerik = document.getElementById('h-icerik').value.trim();
-    
-    if(baslik && icerik) {
-      // Yeni haberi listenin en başına ekle
-      haberler.unshift({ 
-          baslik: baslik, 
-          icerik: icerik, 
-          tarih: new Date().toISOString().slice(0,10) 
-      });
-      
-      // Kaydet ve ekrana yansıt
-      localStorage.setItem(KEY, JSON.stringify(haberler));
-      listele();
-      terminalYaz('Yeni Haber Küresel Ağda Yayınlandı.');
-      
-      // Kutuları temizle
-      document.getElementById('h-baslik').value = '';
-      document.getElementById('h-icerik').value = '';
-    } else {
-        alert('Lütfen başlık ve içerik kısımlarını doldurun.');
-    }
-  };
-
-  // 6. Haberi Silme Fonksiyonu
-  window.haberSil = function(index) {
-    if(confirm('Bu haberi kalıcı olarak silmek istediğinize emin misiniz?')) {
-        haberler.splice(index, 1);
-        localStorage.setItem(KEY, JSON.stringify(haberler));
-        listele();
-        terminalYaz('Belirtilen veri veritabanından başarıyla silindi.');
-    }
-  };
-
-  // 7. Arka Plan Terminal Akışı (Görüntü 3'ten veri dahil)
-  setInterval(() => {
-    if(!term.textContent.includes('SİSTEM')) {
-      const logs = [
-          "[INFO] Bağlantı stabil.",
-          `[CRACKING] ${sozluk[Math.floor(Math.random() * sozluk.length)]} denendi (başarısız)...`,
-          "[GÜVENLİK] Güvenlik duvarı %100.",
-          "[SİBER] siber_goz_app/ klasörü senkronize ediliyor..."
+      // 3. Dinamik Haber Sistemi (LocalStorage tabanlı)
+      let newsData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+        { baslik: "Sistem Aktif Edildi", icerik: "Global Cyber Base v9.0 tüm modülleriyle yayına girdi.", tarih: "05.05.2026" }
       ];
-      term.textContent = logs[Math.floor(Math.random() * logs.length)];
-    }
-  }, 4500);
 
-  // Basit Sanitize Fonksiyonu (Haber Girişi Güvenliği)
-  function escapeHtml(s='') { return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]); }
+      window.listele = () => {
+        newsBox.innerHTML = newsData.map((n, i) => `
+          <div class="news-item">
+            <h4>${n.baslik}</h4>
+            <small>${n.tarih}</small>
+            <p>${n.icerik}</p>
+            ${i > 0 ? `<button onclick="haberSil(${i})" style="color:red; background:none; border:none; cursor:pointer; font-size:12px; padding:0; text-decoration:underline;">[VERİYİ SİL]</button>` : ''}
+          </div>
+        `).join('');
+      };
 
-  // AdSense Yükleme Güvenliği
-  window.addEventListener('load', () => {
-    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) { /* Hata yok sayılır */ }
-  });
+      window.haberYayinla = () => {
+        const pass = document.getElementById('admin-sifre').value;
+        const b = document.getElementById('h-baslik').value;
+        const i = document.getElementById('h-icerik').value;
 
-})();
-</script><section class="intro" style="border-left-color: var(--kirmizi); margin-top:30px;">
-  <h3 style="color:var(--kirmizi); margin:0;">📺 SMART TV UZAKTAN KONTROL</h3>
-  <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top:15px;">
-    <button class="btn" onclick="termuxGonder('tv_power')">GÜÇ</button>
-    <button class="btn" onclick="termuxGonder('tv_vol_up')">SES +</button>
-    <button class="btn" onclick="termuxGonder('tv_vol_down')">SES -</button>
-    <button class="btn" onclick="termuxGonder('tv_menu')" style="background:var(--koyu)">MENÜ</button>
-  </div>
-</section>
+        if (pass !== ADMIN_PASS) {
+          alert("Yetkisiz Erişim! Protokol reddedildi.");
+          return;
+        }
 
+        if (b && i) {
+          newsData.unshift({ baslik: b, icerik: i, tarih: new Date().toLocaleDateString() });
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(newsData));
+          listele();
+          terminalYaz(`[HABER] Yeni veri sisteme enjekte edildi: ${b}`);
+          document.getElementById('h-baslik').value = '';
+          document.getElementById('h-icerik').value = '';
+        }
+      };
+
+      window.haberSil = (index) => {
+        if (confirm("Bu veriyi veritabanından kalıcı olarak silmek istediğinize emin misiniz?")) {
+          newsData.splice(index, 1);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(newsData));
+          listele();
+          terminalYaz("[SİSTEM] Bir haber kaydı veritabanından temizlendi.");
+        }
+      };
+
+      window.toggleAdmin = () => {
+        const p = document.getElementById('admin-panel');
+        p.style.display = p.style.display === 'block' ? 'none' : 'block';
+      };
+
+      // 4. Arka Plan Canlandırma (Dinamik Loglar)
+      setInterval(() => {
+        const logs = [
+          "Veritabanı senkronizasyonu tamamlandı.",
+          "Port 56791 (Vestel Remote) izleniyor...",
+          "Siber_Goz_V2: Şüpheli hareket tespit edilmedi.",
+          "Python Borsa Analizörü: THYAO takibi güncel.",
+          "Termux Bridge: Kalp atışı (heartbeat) alındı."
+        ];
+        if (Math.random() > 0.7) {
+          terminalYaz(`[OTOMATİK] ${logs[Math.floor(Math.random() * logs.length)]}`);
+        }
+      }, 6000);
+
+      // İlk yükleme
+      listele();
+      terminalYaz("Tüm sistemler Muharrem Gürlüyer yetkisiyle aktif edildi.");
+    })();
+  </script>
 </body>
 </html>
- 
