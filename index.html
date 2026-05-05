@@ -25,7 +25,7 @@
     .card-emoji{font-size:28px}
     .card-title{margin-top:10px;color:var(--mavi);font-weight:700}
     .btn{background:var(--mavi);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:12px;display:block;width:100%}
-    .terminal{background:linear-gradient(90deg,#071017 0,#0b1a24 100%);border-radius:12px;padding:16px;margin-top:22px;color:#00ff7a;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;white-space:pre-wrap;font-size:14px;min-height:90px;box-shadow:var(--card-shadow);border: 1px solid #1e2d3d}
+    .terminal{background:linear-gradient(90deg,#071017 0,#0b1a24 100%);border-radius:12px;padding:16px;margin-top:22px;color:#00ff7a;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;white-space:pre-wrap;font-size:14px;min-height:100px;box-shadow:var(--card-shadow);border: 1px solid #1e2d3d}
     .news-wrap{display:flex;gap:18px;margin-top:20px;align-items:flex-start}
     .news{flex:1;background:#fff;border-radius:12px;padding:18px;border-top:6px solid var(--mavi);box-shadow:var(--card-shadow)}
     .news h3{margin:0 0 8px 0;color:var(--kirmizi);padding-bottom:8px;border-bottom:2px solid rgba(220,53,69,0.08)}
@@ -36,7 +36,7 @@
     footer{text-align:center;padding:28px;margin-top:28px;color:#42505a}
     
     /* Reklam kapsayıcıları */
-    .ad-container{display:flex;justify-content:center;align-items:center;padding:12px 0}
+    .ad-container{display:flex;justify(align-items:center;padding:12px 0}
     
     @media (max-width:720px){ 
       .header{flex-direction:column;align-items:flex-start} 
@@ -74,7 +74,7 @@
       <div class="card">
         <div class="card-emoji">🛡️</div>
         <div class="card-title">Siber Savunma</div>
-        <button class="btn" onclick="terminalYaz('Siber Savunma Protokolü Aktif Edildi. Küresel Güvenlik Duvarı Taranıyor...')">Protokolü Aç</button>
+        <button class="btn" onclick="terminalYaz('Siber Savunma Protokolü Aktif Edildi. Küresel Güvenlik Duvarı Taranıyor...\n[DETECTED] siber_goz_app/ klasörü senkronize ediliyor.')">Protokolü Aç</button>
       </div>
       <div class="card">
         <div class="card-emoji">🧠</div>
@@ -93,7 +93,7 @@
       </div>
     </section>
 
-    <div class="terminal" role="status" aria-live="polite" id="terminal-ekrani">Sistem terminali hazır... [Bağlantı Bekleniyor]</div>
+    <div class="terminal" role="status" aria-live="polite" id="terminal-ekrani">Sistem terminali hazır... [Giriş Bekleniyor]</div>
 
     <div class="news-wrap">
       
@@ -113,8 +113,8 @@
       <aside style="width:320px;max-width:320px">
         <div style="background:#fff;border-radius:12px;padding:16px;border-top:6px solid var(--mavi);box-shadow:var(--card-shadow)">
           <h4 style="margin:0 0 8px 0;color:var(--mavi)">Sistem Durumu</h4>
-          <p style="margin:0 0 8px 0;color:#475569;font-size:14px">Python asistanı ile küresel borsa ve ağ raporları anlık işlenmektedir.</p>
-          <button class="btn" style="background:#06b6d4" onclick="terminalYaz('Borsa Raporları Güncellendi: BIST ve Küresel veriler takipte.')">Raporu Al</button>
+          <p style="margin:0 0 8px 0;color:#475569;font-size:14px">Python asistanı ile borsa ve ağ raporları anlık işlenmektedir.</p>
+          <button class="btn" style="background:#06b6d4" onclick="terminalYaz('Borsa Raporları Güncellendi: THYAO, ASELS, EREGL takipte.')">Raporu Al</button>
         </div>
 
         <div class="ad-container" style="margin-top:16px">
@@ -148,13 +148,16 @@
 
 <script>
 (() => {
-  // ŞİFRE VE VERİTABANI ANAHTARI
+  // ŞİFRE VE VERİTABANI ANAHTARI (Görüntü 3'ten admin-demo-2026)
   const SIFRE = 'admin-demo-2026';
-  const KEY = 'global_cyber_v6'; // Verilerin çakışmaması için sürüm güncellendi
+  const KEY = 'global_cyber_v7'; // Verilerin çakışmaması için sürüm güncellendi
   
   const term = document.getElementById('terminal-ekrani');
   const haberAlan = document.getElementById('haberler-listesi');
   const panel = document.getElementById('admin-panel');
+
+  // Termux'taki kirici.py sözlük listesi (Görüntü 3'ten)
+  const sozluk = ["admin", "123456", "muharrem", "sifre123", "password"];
 
   // 1. Terminal Efekti Fonksiyonu (Butonları Canlandırır)
   window.terminalYaz = (mesaj) => {
@@ -180,8 +183,8 @@
     
     haberAlan.innerHTML = haberler.map((h, index) => `
       <div class="news-item">
-        <strong style="color:var(--mavi)">${h.baslik}</strong> <small>[${h.tarih}]</small>
-        <p style="margin:8px 0">${h.icerik}</p>
+        <strong style="color:var(--mavi)">${escapeHtml(h.baslik)}</strong> <small>[${escapeHtml(h.tarih)}]</small>
+        <p style="margin:8px 0">${escapeHtml(h.icerik)}</p>
         ${index > 0 ? `<button onclick="haberSil(${index})" style="color:red;background:none;border:none;cursor:pointer;font-size:12px;padding:0;text-decoration:underline;">Haberi Sil</button>` : ''}
       </div>
     `).join('');
@@ -227,7 +230,7 @@
     }
   };
 
-  // 6. Haberi Silme Fonksiyonu (Yanlışlıkla girilenleri silmek için)
+  // 6. Haberi Silme Fonksiyonu
   window.haberSil = function(index) {
     if(confirm('Bu haberi kalıcı olarak silmek istediğinize emin misiniz?')) {
         haberler.splice(index, 1);
@@ -237,18 +240,21 @@
     }
   };
 
-  // 7. Arka Plan Terminal Akışı (Kendi Kendine Yazan Metinler)
+  // 7. Arka Plan Terminal Akışı (Görüntü 3'ten veri dahil)
   setInterval(() => {
     if(!term.textContent.includes('SİSTEM')) {
       const logs = [
-          "[BİLGİ] Global ağ bağlantısı stabil.",
-          "[VERİTABANI] Sunucular arası sorgulama yapılıyor...",
-          "[GÜVENLİK] Güvenlik duvarı %100 kapasite ile çalışıyor.",
-          "[SİBER] Python betikleri arka planda hazır bekliyor."
+          "[INFO] Bağlantı stabil.",
+          `[CRACKING] ${sozluk[Math.floor(Math.random() * sozluk.length)]} denendi (başarısız)...`,
+          "[GÜVENLİK] Güvenlik duvarı %100.",
+          "[SİBER] siber_goz_app/ klasörü senkronize ediliyor..."
       ];
       term.textContent = logs[Math.floor(Math.random() * logs.length)];
     }
   }, 4500);
+
+  // Basit Sanitize Fonksiyonu (Haber Girişi Güvenliği)
+  function escapeHtml(s='') { return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]); }
 
   // AdSense Yükleme Güvenliği
   window.addEventListener('load', () => {
